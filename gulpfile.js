@@ -6,7 +6,7 @@ const jimp = require("jimp");
 const resemble = require('node-resemble-js');
 const webdriver = require('selenium-webdriver');
 const chalk = require('chalk');
-
+const argv = require('minimist')(process.argv.slice(2));
 const RunBundle = require('cuke-js-framework');
 
 gulp.task('selenium:start', function (done) {
@@ -142,10 +142,36 @@ gulp.task('shots:diff', function(done) {
             if (0 === score) console.log('\t' + chalk.green(`${all} out of ${all} tests passed`) + '\n');
             else console.log('\n\t' + chalk.red(`${score} out of ${all} tests failed`) + '\n' +
                              '\tsee ./shots/diff for more info\n\n' +
-                             '\tgulp shots:setmaster [--test <name>][--all] for set new master images\n\n');
+                             '\tgulp shots:setmaster [--test "<name>"][--all] for set new master images\n\n');
             done();
         });
 
+});
+
+gulp.task('shots:setmaster', function() {
+    console.log('\n\tSetting master images:\n');
+    if (!!argv.all) {
+        let files = fs.readdirSync('./shots/candidate');
+        files.forEach((file) => {
+            let candidate = fs.readFileSync(`./shots/candidate/${file}`);
+            fs.writeFileSync(`./shots/master/${file}`, candidate);
+            console.log('\t\tNew master set for ' + chalk.yellow(file));
+        });
+    }
+    else if (!!argv.test) {
+        if (fs.existsSync(`./shots/candidate/${argv.test}.png`)) {
+            let candidate = fs.readFileSync(`./shots/candidate/${argv.test}.png`);
+            fs.writeFileSync(`./shots/master/${argv.test}.png`, candidate);
+            console.log('\t\tNew master set for ' + chalk.yellow(argv.test + '.png'));
+        }
+        else {
+            throw 'test does not exist';
+        }
+    }
+    else {
+        throw 'test is not specified'
+    }
+    console.log('\n\n');
 });
 
 
