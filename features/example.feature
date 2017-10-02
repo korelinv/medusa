@@ -7,3 +7,7 @@ Feature: test case
     Scenario: straight
        Given goto 'https://www.google.ru'
         Then capture '[id="body"]'
+
+    Scenario: EAIST loginform
+       Given goto 'http://eaist-demo2.proitr.ru/login.html'
+        Then capture '[name="loginForm"]'
