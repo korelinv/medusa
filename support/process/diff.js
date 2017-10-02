@@ -54,6 +54,7 @@ module.exports = function diff({MASTER, CANDIDATE, DIFF}) {
             if (0 === score)
             {
                 report.push(newline() + tab() + chalk.green(`${all} out of ${all} tests passed`));
+                report.push(newline(1));
             }
             else
             {
