@@ -4,8 +4,8 @@ const captureImage = require('../support/steps/captureImage');
 module.exports = function()
 {
 
-    this.Given(/^goto "(.*)"$/, openUrl);
+    this.Given(/^goto '(.*)'$/, openUrl);
 
-    this.Then(/^capture (.*)$/, captureImage);
+    this.Then(/^capture '(.*)'$/, captureImage);
 
 }
